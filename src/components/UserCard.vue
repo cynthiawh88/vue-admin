@@ -3,8 +3,8 @@
     <div class="card">
         <div class="panel">
             <div class="userinfo">
-                <v-avatar icon="user"></v-avatar>
-                <b class="name">admin</b>
+                <v-avatar >{{user.username.substr(0, 1).toUpperCase()}}</v-avatar>
+                <b class="name">{{ user.username }}</b>
             </div>
         </div>
         <ul class="card-actions">
@@ -26,6 +26,21 @@
     </div>
 </div>
 </template>
+<script>
+export default {
+    name: 'UserCard',
+    props: {
+        user: {
+            type: Object,
+            required: true,
+            validator: function (user) {
+                console.log(user);
+                return true;
+            }
+        }
+    }
+}
+</script>
 <style lang="less">
 .hoverable{
     cursor:pointer;
@@ -70,8 +85,3 @@
     }
 }
 </style>
-<script>
-export default {
-    name: 'UserCard'
-}
-</script>

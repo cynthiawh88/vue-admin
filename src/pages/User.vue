@@ -6,8 +6,8 @@
 
         <div style="background: #ECECEC;padding: 30px">
             <v-row :gutter="16">
-                <v-col :span="6">
-                    <UserCard />
+                <v-col :span="6" v-for="user in userList" :key="index">
+                    <UserCard :user="user"/>
                 </v-col>
             </v-row>
         </div>
@@ -43,7 +43,7 @@ export default {
                 }
             ).then(resp => {
                 if (resp.status == true) {
-                    this.userList = resp.payload.user_list.list;
+                    this.userList = resp.payload.user_list.list.list;
                     this.page = resp.payload.user_list.page;
                     this.pagesize = resp.payload.user_list.pagesize;
                     this.count = resp.payload.user_list.count;
