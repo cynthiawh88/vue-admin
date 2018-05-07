@@ -27,7 +27,7 @@
                     </div>
                 </v-content>
                 <v-footer :style="{ textAlign: 'center' }">
-                    Ant Design ©2016 Created by Ant UED
+                    2014-2018 &copy Created By Himi
                 </v-footer>
             </v-layout>
         </v-layout>
