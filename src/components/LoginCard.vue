@@ -14,13 +14,13 @@
                 <v-input type="username" size="large" v-model="loginForm.username"></v-input>
             </v-form-item>
             <v-form-item label="密码" :label-col="labelCol" :wrapper-col="wrapperCol" prop="password" has-feedback>
-                <v-input type="password" size="large" v-model="loginForm.password"></v-input>
+                <v-input type="password" size="large" v-model="loginForm.password" @keyup.enter.native="submitForm('loginForm')"></v-input>
             </v-form-item>
             <v-form-item>
                 <v-row type="flex" justify="start">
                     <v-col span="6"></v-col>
                     <v-col span="14">
-                        <v-button type="primary" style="width:100%;"  @click.prevent="submitForm('loginForm')">提交</v-button>
+                        <v-button type="primary" style="width:100%;"  @click.prevent="submitForm('loginForm')" :loading="loading">提交</v-button>
                     </v-col>
                 </v-row>
             </v-form-item>
@@ -53,17 +53,20 @@ export default {
             loginForm: {
                 username: '',
                 password: ''
-            }
+            },
+            loading: false
         };
     },
     methods: {
         submitForm: function(formName) {
+            this.loading = true;
             this.$refs[formName].validate((valid) => {
                 if (valid) {
                     api.login({
                         username: this.loginForm.username,
                         password: md5(this.loginForm.password)
                     }).then(resp => {
+                        this.loading = false;
                         if (resp.status == true)
                         {
                             let loginResult = resp.payload.login;
@@ -71,12 +74,13 @@ export default {
                             // 提交Token
                             this.$store.dispatch('login', loginResult.login.token);
                             // 提交用户信息
-                            this.$store.dispatch('userinfo', loginResult.user);
+                            this.$store.dispatch('userinfo', {userid: loginResult.user.user_id, username: loginResult.user.username});
                             // 提交权限信息
                             this.$store.dispatch('permission', permissionResult.permissions);
                         }
                     });
                 } else {
+                    this.loading = false;
                     return false;
                 }
             });

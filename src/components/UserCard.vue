@@ -72,20 +72,6 @@
             <span></span>
         </template>
     </v-modal>
-
-    <!-- 角色选择 -->
-    <v-modal title="选择角色"
-        :visible="roleDialogVisible"
-        @cancel="closeRoleVisible"
-        :maskClosable="false"
-    >
-        
-
-
-        <template slot="footer">
-            <span></span>
-        </template>
-    </v-modal>
 </div>
 
 
@@ -181,6 +167,7 @@ export default {
     -webkit-transition: all .3s;
     transition: all .3s;
     .card {
+        border-radius:16px;
         .panel {
             background: #fff; 
             padding: 15px; 

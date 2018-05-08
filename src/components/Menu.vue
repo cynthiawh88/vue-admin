@@ -13,6 +13,12 @@
             <v-layout>
                 <v-header :style="{ background: '#fff', padding: 0, boxShadow: '0 1px 4px rgba(0,21,41,.08)', position: 'relative' }">
                     <v-icon class="trigger" :type="this.customCollapsed ? 'menu-unfold' : 'menu-fold'" @click.native="toggle"></v-icon>
+                    <!-- 用户信息下拉框 -->
+                    <v-dropdown :data="data" class="userinfo-dropdown" @item-click="userInfoClick">
+                        <a href="javascript:void(0)" class="ant-dropdown-link ant-dropdown-trigger">
+                           {{ username }} <v-icon type="down"></v-icon>
+                        </a>
+                    </v-dropdown>
                 </v-header>
                 <v-content :style="{ padding: '0 0' }">
                     <v-breadcrumb :style="{ padding: '10px 15px', background: '#fff' }">
@@ -31,34 +37,60 @@
                 </v-footer>
             </v-layout>
         </v-layout>
+
+
+        <!--  修改密码  -->
+        <v-modal title="修改密码"
+            :visible="passwordDialogVisible"
+            @cancel="closePasswordDialog"
+            :maskClosable="false"
+        >
+            <UpdatePassword @close="closePasswordDialog"/>
+            <template slot="footer">
+                <span></span>
+            </template>
+        </v-modal>
     </div>
 </template>
 <script>
 import { mapState } from 'vuex';
+import UpdatePassword from '@/components/UpdatePassword';
 export default {
+    components: {
+        UpdatePassword
+    },
     data() {
         return {
             customCollapsed: false,
-            menuData: [{
-                name: '仪表盘',
-                icon: 'desktop',
-                href: '/admin/dashboard',
-                selected: false
-            },
-            {
-                name: '管理员资料',
-                icon: 'user',
-                expand: false,
-                children: [{
-                    href: '/admin/user',
-                    name: "管理员列表",
+            menuData: [
+                {
+                    name: '仪表盘',
+                    icon: 'desktop',
+                    href: '/admin/dashboard',
                     selected: false
-                },{
-                    href: '/admin/role',
-                    name: "角色列表",
-                    selected: false
-                }]
-            }]
+                },
+                {
+                    name: '管理员资料',
+                    icon: 'user',
+                    expand: false,
+                    children: [
+                        {
+                        href: '/admin/user',
+                        name: "管理员列表",
+                        selected: false
+                        },{
+                            href: '/admin/role',
+                            name: "角色列表",
+                            selected: false
+                        }
+                    ]
+                }
+            ],
+            passwordDialogVisible: false,
+            data: [
+                {content: '修改密码', event: 'updatePassword'},
+                {content: '退出登录', event: 'exit'}
+            ],
         }
     },
     computed: {
@@ -104,15 +136,16 @@ export default {
             }
         },
         itemClick(menus) {
-            // let breadcurmbs = [];
-            // for (let i in menus)
-            // {
-            //     breadcurmbs.push({
-            //         name: menus[i].name,
-            //         href: typeof(menus[i].href) == 'undefined' ? '' : menus[i].href
-            //     });
-            // }
-            // this.$store.dispatch('changeBreadcurmbs', breadcurmbs, '123');
+        },
+        userInfoClick: function(data) {
+            switch(data.event) {
+                case "updatePassword":
+                    this.passwordDialogVisible = true;
+                break;
+            }
+        },
+        closePasswordDialog: function() {
+            this.passwordDialogVisible = false;
         }
     }
 };
@@ -151,5 +184,18 @@ export default {
     }
     #leftMenu .ant-menu-item .nav-text {
         padding-left: 14px;
+    }
+    #leftMenu .menu-userinfo {
+        height: 100%;
+        line-height: 100%;
+        float: right;
+    }
+    #leftMenu .userinfo-dropdown {
+        float: right;
+        margin: 0 30px;
+        font-size: 16px;
+        i {
+            font-size: 16px;
+        }
     }
 </style>

@@ -6,3 +6,10 @@ export async function login(params) {
         method: 'post'
     });
 }
+
+export async function updatePassword(params) {
+    return request('/password/update', {
+        data: params,
+        method: 'post'
+    });
+}

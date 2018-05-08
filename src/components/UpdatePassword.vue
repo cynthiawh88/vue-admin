@@ -8,13 +8,13 @@
                 <v-input type="password" size="large" v-model="passwordForm.password"></v-input>
             </v-form-item>
             <v-form-item label="重复密码" :label-col="labelCol" :wrapper-col="wrapperCol" prop="confirm_password" has-feedback>
-                <v-input type="confirm_password" size="large" v-model="passwordForm.confirm_password"></v-input>
+                <v-input type="confirm_password" size="large" v-model="passwordForm.confirm_password" @keyup.enter.native="submitForm('passwordForm')"></v-input>
             </v-form-item>
             <v-form-item>
                 <v-row type="flex" justify="start">
                     <v-col span="6"></v-col>
                     <v-col span="14">
-                        <v-button type="primary" style="width:100%;"  @click.prevent="submitForm('passwordForm')">提交</v-button>
+                        <v-button type="primary" style="width:100%;"  @click.prevent="submitForm('passwordForm')" :loading="loading">提交</v-button>
                     </v-col>
                 </v-row>
             </v-form-item>
@@ -23,7 +23,7 @@
 </template>
 <script>
 import md5 from 'js-md5';
-import * as userApi from '@/request/user';
+import * as api from '@/request/api';
 export default {
     name: "UpdatePassword",
     data() {
@@ -65,24 +65,35 @@ export default {
                 old_password: '',
                 password: '',
                 comfirm_password: ''
-            }
+            },
+            loading: false
         };
     },
     methods: {
         submitForm: function(formName) {
+            this.loading = true;
             this.$refs[formName].validate((valid) => {
                 if (valid) {
-                    userApi.updatePassword({
+                    api.updatePassword({
                         old_password: md5(this.passwordForm.old_password),
                         password: md5(this.passwordForm.password)
                     }).then(resp => {
+                        this.loading = false;
                         if (resp.status == true)
                         {
-                            // 退出登录
-                            this.$store.dispatch('logout');
+                            // 上报关闭事件
+                            this.$emit('close');
+                            // 旋转一下Loading
+                            this.$message.info("修改成功！即将退出后台，请重新登录。", 2);
+                            let _this = this;
+                            setTimeout(function() {
+                                // 退出登录
+                                _this.$store.dispatch('logout');
+                            }, 2100);
                         }
                     });
                 } else {
+                    this.loading = false;
                     return false;
                 }
             });

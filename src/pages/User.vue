@@ -1,7 +1,15 @@
 <template>
     <div id="User">
         <v-card title="管理员列表" :bordered="true" :noHovering="true">
-            该页面我也不知道该怎么描述
+            <!-- 条件搜索开始 -->
+            <v-form>
+                <v-form-item label="关键词">
+                    <v-input placeholder="" v-model="key"></v-input>
+                </v-form-item>
+                <v-form-item>
+                    <v-button type="primary" @click="paginate">搜索</v-button>
+                </v-form-item>
+            </v-form>
         </v-card>
         
         <div class="user-content">
@@ -11,6 +19,14 @@
                         <UserCard :user="user"/>
                     </v-col>
                 </v-row>
+                <br />
+                <v-pagination 
+                :page-size="pagesize"
+                show-size-changer
+                @sizechange="pagesizeChange"
+                @change="pageChange"
+                :show-total="showTotal"
+                :total="count"></v-pagination>
             </v-spin>
         </div>
     </div>
@@ -29,7 +45,7 @@ export default {
             pagesize: 20,
             count: 0,
             key: '',
-            loading: true,
+            loading: false,
             userList: []
         };
     },
@@ -38,21 +54,35 @@ export default {
     },
     methods: {
         paginate() {
+            this.loading = true;
+            this.userList = [];
             userApi.paginate(
                 {
                     page: this.page,
-                    pagsize: this.pagesize,
+                    pagesize: this.pagesize,
                     key: this.key
                 }
             ).then(resp => {
                 if (resp.status == true) {
-                    this.userList = resp.payload.user_list.list.list;
+                    this.userList = resp.payload.user_list.list;
                     this.page = resp.payload.user_list.page;
                     this.pagesize = resp.payload.user_list.pagesize;
                     this.count = resp.payload.user_list.count;
                 }
                 this.loading = false;
             });
+        },
+        pagesizeChange: function(current, size){
+            this.pagesize = size;
+            this.paginate();
+        },
+        pageChange: function(page)
+        {
+            this.page = page;
+            this.paginate();
+        },
+        showTotal: function(total, totalPage) {
+            return `总共 ${totalPage} 页, 全部 ${total} 条`;
         }
     }
 }

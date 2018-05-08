@@ -5,7 +5,7 @@ Vue.use(Vuex);
 let store = new Vuex.Store({
     state: {
         accessToken: '',
-        userId: undefined,
+        userid: undefined,
         username: '',
         permissions: [],
 
@@ -17,16 +17,16 @@ let store = new Vuex.Store({
         login: function(state, token) {
             state.accessToken = token;
         },
-        userinfo: function (state, userid, username) {
-            state.userid = userid;
-            state.username = username;
+        userinfo: function (state, userinfo) {
+            state.userid = userinfo.userid;
+            state.username = userinfo.username;
         },
         permission: function(state, permissions) {
             state.permissions = permissions;
         },
         logout: function(state) {
             state.accessToken = '';
-            state.userId = '';
+            state.userid = '';
             state.username = '';
             state.permissions = [];
         },
@@ -54,10 +54,10 @@ let store = new Vuex.Store({
         },
         userinfo(store, userinfo){
             // 本地存储
-            window.localStorage.setItem('userid', userinfo.user_id);
+            window.localStorage.setItem('userid', userinfo.userid);
             window.localStorage.setItem('username', userinfo.username);
             // 设置State
-            store.commit('userinfo', userinfo.user_id, userinfo.username);
+            store.commit('userinfo', {userid: userinfo.user_id, username: userinfo.username});
         },
         permission(store, permissions){
             window.localStorage.setItem('permissions', JSON.stringify(permissions));
@@ -83,7 +83,7 @@ let store = new Vuex.Store({
             let permissions = window.localStorage.getItem('permissions');
             let accessToken = window.localStorage.getItem('token');
             store.commit('login', accessToken);
-            store.commit('userinfo', userid, username);
+            store.commit('userinfo', {userid, username});
             store.commit('permission', JSON.parse(permissions));
         },
         setHistory(store, path) {

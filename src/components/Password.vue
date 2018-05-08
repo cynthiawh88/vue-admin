@@ -5,13 +5,13 @@
                 <v-input type="password" size="large" v-model="passwordForm.password"></v-input>
             </v-form-item>
             <v-form-item label="重复密码" :label-col="labelCol" :wrapper-col="wrapperCol" prop="confirm_password" has-feedback>
-                <v-input type="confirm_password" size="large" v-model="passwordForm.confirm_password"></v-input>
+                <v-input type="confirm_password" size="large" v-model="passwordForm.confirm_password" @keyup.enter.native="submitForm('passwordForm')"></v-input>
             </v-form-item>
             <v-form-item>
                 <v-row type="flex" justify="start">
                     <v-col span="6"></v-col>
                     <v-col span="14">
-                        <v-button type="primary" style="width:100%;"  @click.prevent="submitForm('passwordForm')">提交</v-button>
+                        <v-button type="primary" style="width:100%;"  @click.prevent="submitForm('passwordForm')" :loading="loading">提交</v-button>
                     </v-col>
                 </v-row>
             </v-form-item>
@@ -61,16 +61,20 @@ export default {
             passwordForm: {
                 password: '',
                 comfirm_password: ''
-            }
+            },
+            loading: false
         };
     },
     methods: {
         submitForm: function(formName) {
+            this.loading = true;
             this.$refs[formName].validate((valid) => {
                 if (valid) {
+                    this.loading = false;
                    // 回调
                    this.$emit('submitevent', this.passwordForm.password);
                 } else {
+                    this.loading = false;
                     return false;
                 }
             });
