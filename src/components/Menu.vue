@@ -93,7 +93,7 @@ export default {
             passwordDialogVisible: false,
             data: [
                 {content: '修改密码', event: 'updatePassword'},
-                {content: '退出登录', event: 'exit'}
+                {content: '退出登录', event: 'logout'}
             ],
         }
     },
@@ -146,10 +146,16 @@ export default {
                 case "updatePassword":
                     this.passwordDialogVisible = true;
                 break;
+                case "logout":
+                    this.logout();
+                break;
             }
         },
         closePasswordDialog: function() {
             this.passwordDialogVisible = false;
+        },
+        logout: function(){
+            this.$store.dispatch('logout');
         }
     }
 };

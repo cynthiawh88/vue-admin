@@ -48,7 +48,7 @@ const routes = [
         component: User,
         meta: {
           aliasName: '管理员列表',
-          power: 'superadmin',
+          power: 'see_user',
           auth: true
         }
       },
@@ -58,7 +58,7 @@ const routes = [
         component: Role,
         meta: {
           aliasName: '角色列表',
-          power: 'superadmin',
+          power: 'see_role',
           auth: true
         }
       },
@@ -68,7 +68,7 @@ const routes = [
         component: Power,
         meta: {
           aliasName: '权限列表',
-          power: 'superadmin',
+          power: 'see_power',
           auth: true
         }
       }
