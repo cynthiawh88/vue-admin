@@ -49,14 +49,14 @@
             </li>
             <li>
                 <v-tooltip content="角色分配">
-                    <span class="action-icon" @click="password">
+                    <span class="action-icon" @click="openRoleDialog">
                         <v-icon type="usergroup-add"></v-icon>
                     </span>
                 </v-tooltip>
             </li>
             <li>
                 <v-tooltip content="修改密码">
-                    <span class="action-icon" @click="password">
+                    <span class="action-icon" @click="openPasswordDialog">
                         <v-icon type="key"></v-icon>
                     </span>
                 </v-tooltip>
@@ -76,6 +76,20 @@
             <span></span>
         </template>
     </v-modal>
+
+    <!--  角色分配  -->
+    <v-modal title="角色分配"
+        :visible="roleDialogVisible"
+        @cancel="closeRoleDialog"
+        :maskClosable="false"
+        :width="700"
+    >
+        <UserRole @close="closeRoleDialog" :userid="user.user_id" />
+
+        <template slot="footer">
+            <span></span>
+        </template>
+    </v-modal>
 </div>
 
 
@@ -84,15 +98,18 @@
 import * as userApi from '@/request/user';
 import md5 from 'js-md5';
 import Password from '@/components/Password';
+import UserRole from '@/components/UserRole';
 export default {
     name: 'UserCard',
     components: {
-        Password
+        Password, UserRole
     },
     data() {
         return {
             loading: false,
-            passwordDialogVisible: false
+            passwordDialogVisible: false,
+
+            roleDialogVisible: false
         }
     },
     props: {
@@ -133,7 +150,7 @@ export default {
                 }
             });
         },
-        password: function() {
+        openPasswordDialog: function() {
             this.passwordDialogVisible = true;
         },
         closePasswordDialog: function() {
@@ -153,6 +170,12 @@ export default {
                     this.closePasswordDialog();
                 }
             });
+        },
+        openRoleDialog: function() {
+            this.roleDialogVisible = true;
+        },
+        closeRoleDialog: function() {
+            this.roleDialogVisible = false;
         }
     }
 }

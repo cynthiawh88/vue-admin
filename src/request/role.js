@@ -7,6 +7,13 @@ export async function paginate(params) {
     });
 }
 
+export async function get(params) {
+    return request('/roles', {
+        params: params,
+        method: 'get'
+    });
+}
+
 export async function find(params) {
     console.log(params);
     return request('/role', {
@@ -45,4 +52,18 @@ export async function getPower(params) {
         params: params,
         method: 'get'
     })
+}
+
+export async function getUserRole(params) {
+    return request('/user/roles', {
+        params: params,
+        method: 'get'
+    });
+}
+
+export async function setUserRole(params) {
+    return request('/user/role/set', {
+        data: params,
+        method: 'post'
+    });
 }

@@ -1,15 +1,15 @@
 <template>
     <div id="UserRole">
         <v-spin :spinning="componentLoading">
-            <v-form direction="horizontal" :rules="roleRules" ref="userRoleForm" :model="userRoleForm" class="form" >
-                <v-form-item label="权限" :label-col="labelCol" :wrapper-col="wrapperCol" prop="textarea" has-feedback>
-                    <v-transfer :data="power_list" :target-keys="has_power" :titles="['所有','已选中']" :label="powerLabel" @change="powerChange" v-if="power_list != undefined"></v-transfer>
+            <v-form direction="horizontal" class="form" >
+                <v-form-item label="角色" :label-col="labelCol" :wrapper-col="wrapperCol" prop="textarea" has-feedback>
+                    <v-transfer :data="role_list" :target-keys="has_role" :titles="['所有','已选中']" :label="powerLabel" @change="powerChange" v-if="role_list != undefined"></v-transfer>
                 </v-form-item>
                 <v-form-item>
                     <v-row type="flex" justify="start">
                         <v-col span="4"></v-col>
                         <v-col span="16">
-                            <v-button type="primary" style="width:100%;"  @click.prevent="submitForm('userRoleForm')" :loading="loading">保存</v-button>
+                            <v-button type="primary" style="width:100%;"  @click.prevent="submitForm()" :loading="loading">保存</v-button>
                         </v-col>
                     </v-row>
                 </v-form-item>
@@ -18,15 +18,14 @@
     </div>
 </template>
 <script>
-import md5 from 'js-md5';
 import * as roleApi from '@/request/role';
 export default {
     name: "UserRole",
     props: {
-        role: {
-            type: Object,
-            required: false,
-            validator: function (role) {
+        userid: {
+            type: Number,
+            required: true,
+            validator: function (userid) {
                 return true;
             }
         }
@@ -39,109 +38,70 @@ export default {
             wrapperCol: {
                 span: 16
             },
-            power_list: undefined,
-            has_power: [],
-            roleRules: {
-                name: [{
-                    required: true,
-                    message: '请输入名称'
-                }],
-                desc: [{
-                    required: true,
-                    message: '请输入简介'
-                }]
-            },
-            userRoleForm: {
-                name: '',
-                desc: '',
-                powers: ''
-            },
+            role_list: undefined,
+            has_role: [],
             loading: false,
             componentLoading: true
         };
     },
     methods: {
-        submitForm: function(formName) {
+        submitForm: function() {
+            if (this.has_role.length < 1)
+            {
+                this.$message.error('至少赋予一个角色');
+                return ;
+            }
             this.loading = true;
-            this.$refs[formName].validate((valid) => {
-                if (valid) {
-                    let route = 'createRole';
-                    let params = {
-                        name: this.userRoleForm.name,
-                        desc: this.userRoleForm.desc,
-                        power_ids: this.has_power
-                    };
-                    if (this.role != undefined)
-                    {
-                        params.role_id = this.role.role_id;
-                        // 执行HTTP请求
-                        roleApi.updateRole(params).then(resp => {
-                            this.loading = false;
-                            if (resp.status) {
-                                this.$message.success("保存成功");
-                                this.$emit('close', this.userRoleForm);
-                            }
-                        });
-                    } else {
-                        // 执行HTTP请求
-                        roleApi.createRole(params).then(resp => {
-                            this.loading = false;
-                            if (resp.status) {
-                                this.$message.success("创建成功");
-                                this.$emit('close', resp.payload.role.role);
-                            }
-                        });
-                    }
-
-                } else {
-                    this.loading = false;
-                    return false;
+            // 执行HTTP请求
+            roleApi.setUserRole({
+                user_id: this.userid,
+                role_ids: this.has_role
+            }).then(resp => {
+                this.loading = false;
+                if (resp.status) {
+                    this.$message.success("保存成功");
+                    this.$emit('close');
                 }
             });
         },
-        findRole: function() {
-            roleApi.find({
-                role_id: this.role.role_id
+        findUserRole: function() {
+            roleApi.getUserRole({
+                user_id: this.userid
             }).then(resp => {
                 if (resp.status) {
-                    this.userRoleForm = resp.payload.role.role;
-                    for (let i in this.userRoleForm.powers) {
-                        this.has_power.push(this.userRoleForm.powers[i].power_id);
+                    let role_list = resp.payload.role_list;
+                    for (let i in role_list) {
+                        this.has_role.push(role_list[i].role_id);
                     }
                 }
             })
         },
-        initPowerList: function() {
-            roleApi.getPower({
-
+        initRoleList: function() {
+            roleApi.get({
             }).then(resp => {
                 this.componentLoading = false;
-                this.power_list = [];
+                this.role_list = [];
                 if(resp.status) {
-                    let power_list = resp.payload.power_list.list;
-                    for (let i in power_list) {
-                        this.power_list.push({
-                            key: power_list[i].power_id,
-                            name: power_list[i].name,
-                            value: power_list[i].key
+                    let role_list = resp.payload.role_list.list;
+                    for (let i in role_list) {
+                        this.role_list.push({
+                            key: role_list[i].role_id,
+                            name: role_list[i].name
                         });
                     }
                 }
             });
         },
         powerLabel: function(item) {
-            return item.name + " [" + item.value + "]"
+            return item.name;
         },
         powerChange(targetKeys, direction, moveKeys) {
-            this.has_power = targetKeys;
+            this.has_role = targetKeys;
         }
     },
     created: function() {
-        if (this.role != undefined)
-        {
-            this.findRole();
-        }
-        this.initPowerList();
+        this.initRoleList();
+        this.findUserRole();
     }
 }
 </script>
