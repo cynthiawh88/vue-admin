@@ -47,6 +47,27 @@ export async function paginatePower(params) {
     })
 }
 
+export async function createPower(params) {
+    return request('/power/create', {
+        data: params,
+        method: 'post'
+    })
+}
+
+export async function updatePower(params) {
+    return request('/power/update', {
+        data: params,
+        method: 'post'
+    })
+}
+
+export async function deletePower(params) {
+    return request('/power/delete', {
+        data: params,
+        method: 'post'
+    })
+}
+
 export async function getPower(params) {
     return request('/powers', {
         params: params,

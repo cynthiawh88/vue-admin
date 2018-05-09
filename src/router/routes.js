@@ -3,6 +3,7 @@ import Admin from '@/pages/Admin'
 import Dashboard from '@/pages/Dashboard'
 import User from '@/pages/User';
 import Role from '@/pages/Role';
+import Power from '@/pages/Power';
 
 const routes = [
   {
@@ -37,6 +38,9 @@ const routes = [
         component: User,
         meta: {
           aliasName: '管理员列表',
+          power: [
+            'superadmin'
+          ],
           auth: true
         }
       },
@@ -46,6 +50,21 @@ const routes = [
         component: Role,
         meta: {
           aliasName: '角色列表',
+          power: [
+            'superadmin'
+          ],
+          auth: true
+        }
+      },
+      {
+        path: '/admin/power',
+        name: 'Power',
+        component: Power,
+        meta: {
+          aliasName: '权限列表',
+          power: [
+            'superadmin'
+          ],
           auth: true
         }
       }

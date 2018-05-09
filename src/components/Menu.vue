@@ -82,6 +82,10 @@ export default {
                             href: '/admin/role',
                             name: "角色列表",
                             selected: false
+                        },{
+                            href: '/admin/power',
+                            name: "权限列表",
+                            selected: false
                         }
                     ]
                 }
