@@ -27,17 +27,21 @@
         <ul class="card-actions">
             <li>
                 <template v-if="user.status">
-                    <v-spin v-if="loading"></v-spin>
-                    <v-tooltip content="禁用" v-else>
-                        <span class="action-icon" @click="disable">
-                            <v-icon type="lock"></v-icon>
+                    <v-tooltip content="禁用">
+                        <span class="action-icon" v-if="loading">
+                            <v-icon type="loading"></v-icon>
+                        </span>
+                        <span class="action-icon" @click="disable" v-else>
+                            <v-icon type="unlock"></v-icon>
                         </span>
                     </v-tooltip>
                 </template>
                 <template v-else>
-                    <v-spin v-if="loading"></v-spin>
-                    <v-tooltip content="启用" v-else>
-                        <span class="action-icon" @click="enable">
+                    <v-tooltip content="启用">
+                        <span class="action-icon" v-if="loading">
+                            <v-icon type="loading"></v-icon>
+                        </span>
+                        <span class="action-icon" @click="enable" v-else>
                             <v-icon type="unlock"></v-icon>
                         </span>
                     </v-tooltip>
@@ -164,6 +168,7 @@ export default {
 }
 
 #UserCard{
+    margin: 5px 0;
     -webkit-transition: all .3s;
     transition: all .3s;
     .card {

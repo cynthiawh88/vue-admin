@@ -2,6 +2,7 @@ import Login from '@/pages/Login'
 import Admin from '@/pages/Admin'
 import Dashboard from '@/pages/Dashboard'
 import User from '@/pages/User';
+import Role from '@/pages/Role';
 
 const routes = [
   {
@@ -42,7 +43,7 @@ const routes = [
       {
         path: '/admin/role',
         name: 'Role',
-        component: Dashboard,
+        component: Role,
         meta: {
           aliasName: '角色列表',
           auth: true

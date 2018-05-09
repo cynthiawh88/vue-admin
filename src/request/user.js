@@ -7,6 +7,13 @@ export async function paginate(params) {
     });
 }
 
+export async function create(params) {
+    return request('/user/create', {
+        data: params,
+        method: 'post'
+    });
+}
+
 export async function enable(params) {
     return request('/user/enable', {
         data: params,

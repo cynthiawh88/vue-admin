@@ -6,6 +6,9 @@
                 <v-form-item label="关键词">
                     <v-input placeholder="" v-model="key"></v-input>
                 </v-form-item>
+                <v-form-item label="状态">
+                    <v-select placeholder="账号状态" style="width: 120px;" :data="statusOptions" v-model="status"></v-select>
+                </v-form-item>
                 <v-form-item>
                     <v-button type="primary" @click="paginate">搜索</v-button>
                 </v-form-item>
@@ -15,6 +18,9 @@
         <div class="user-content">
             <v-spin :spinning="loading">
                 <v-row :gutter="16">
+                    <v-col :span="6">
+                        <AddCard text="添加" :height="197" @click="openUserDialog"/>
+                    </v-col>
                     <v-col :span="6" v-for="(user, index) in userList" :key="index">
                         <UserCard :user="user"/>
                     </v-col>
@@ -29,15 +35,31 @@
                 :total="count"></v-pagination>
             </v-spin>
         </div>
+
+
+
+    <!--  添加账号信息  -->
+    <v-modal title="添加账号"
+        :visible="createUserVisible"
+        @cancel="closeUserDialog"
+        :width="700"
+    >
+        <UserForm @close="closeUserDialog"/>
+        <template slot="footer">
+            <span></span>
+        </template>
+    </v-modal>
     </div>
 </template>
 <script>
-import UserCard from '@/components/UserCard'
+import UserCard from '@/components/UserCard';
+import UserForm from '@/components/UserForm';
+import AddCard from '@/components/AddCard';
 import * as userApi from '@/request/user';
 export default {
     name: "User",
     components: {
-        UserCard
+        UserCard, AddCard, UserForm
     },
     data() {
         return {
@@ -45,8 +67,24 @@ export default {
             pagesize: 20,
             count: 0,
             key: '',
+            status: 0,
+            statusOptions: [
+                {
+                    value: 0,
+                    label: '全部状态'
+                },
+                {
+                    value: 1,
+                    label: '正常'
+                },
+                {
+                    value: 2,
+                    label: '冻结'
+                }
+            ],
             loading: false,
-            userList: []
+            userList: [],
+            createUserVisible: false
         };
     },
     mounted: function() {
@@ -60,7 +98,8 @@ export default {
                 {
                     page: this.page,
                     pagesize: this.pagesize,
-                    key: this.key
+                    key: this.key,
+                    status: this.status
                 }
             ).then(resp => {
                 if (resp.status == true) {
@@ -83,7 +122,17 @@ export default {
         },
         showTotal: function(total, totalPage) {
             return `总共 ${totalPage} 页, 全部 ${total} 条`;
-        }
+        },
+        openUserDialog: function() {
+            this.createUserVisible = true;
+        },
+        closeUserDialog: function(user = undefined) {
+            if (user != undefined)
+            {
+                this.userList.unshift(user);
+            }
+            this.createUserVisible = false;
+        },
     }
 }
 </script>
