@@ -67,4 +67,4 @@ export const random_string = function(len) {
       　　pwd += chars.charAt(Math.floor(Math.random() * maxPos));
     }
     return pwd;
-  }
+}

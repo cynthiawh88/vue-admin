@@ -51,5 +51,6 @@ export default {
   color: #2c3e50;
   background: #eceff3;
   height: 100%;
+  min-width: 1366px;
 }
 </style>

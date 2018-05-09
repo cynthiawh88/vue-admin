@@ -4,6 +4,7 @@ import Dashboard from '@/pages/Dashboard'
 import User from '@/pages/User';
 import Role from '@/pages/Role';
 import Power from '@/pages/Power';
+import NotFound from '@/pages/NotFound';
 
 const routes = [
   {
@@ -24,6 +25,15 @@ const routes = [
     },
     children: [
       {
+        path: '/admin/404',
+        name: 'NotFound',
+        component: NotFound,
+        meta: {
+          aliasName: '404',
+          auth: true
+        }
+      },
+      {
         path: '/admin/dashboard',
         name: 'Dashboard',
         component: Dashboard,
@@ -38,9 +48,7 @@ const routes = [
         component: User,
         meta: {
           aliasName: '管理员列表',
-          power: [
-            'superadmin'
-          ],
+          power: 'superadmin',
           auth: true
         }
       },
@@ -50,9 +58,7 @@ const routes = [
         component: Role,
         meta: {
           aliasName: '角色列表',
-          power: [
-            'superadmin'
-          ],
+          power: 'superadmin',
           auth: true
         }
       },
@@ -62,9 +68,7 @@ const routes = [
         component: Power,
         meta: {
           aliasName: '权限列表',
-          power: [
-            'superadmin'
-          ],
+          power: 'superadmin',
           auth: true
         }
       }
