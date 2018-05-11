@@ -2,7 +2,7 @@
     <div id="Admin">
             <Menu>
                 <template slot="content">
-                    <keep-alive>
+                    <keep-alive :exclude="keepAliveExclude">
                         <router-view></router-view>
                     </keep-alive>
                 </template>
@@ -12,13 +12,15 @@
 <script>
 import Menu from '@/components/Menu';
 export default {
-    name: "Login",
+    name: "Admin",
     components: {
         Menu
     },
     data() {
         return {
-
+            keepAliveExclude: [
+                'Login'
+            ]
         };
     },
     methods: {

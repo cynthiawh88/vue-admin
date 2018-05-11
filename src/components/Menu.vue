@@ -54,6 +54,7 @@
 </template>
 <script>
 import { mapState } from 'vuex';
+import * as menu from '@/jsons/menu.json';
 import UpdatePassword from '@/components/UpdatePassword';
 export default {
     components: {
@@ -62,34 +63,7 @@ export default {
     data() {
         return {
             customCollapsed: false,
-            menuData: [
-                {
-                    name: '仪表盘',
-                    icon: 'desktop',
-                    href: '/admin/dashboard',
-                    selected: false
-                },
-                {
-                    name: '管理员资料',
-                    icon: 'user',
-                    expand: false,
-                    children: [
-                        {
-                        href: '/admin/user',
-                        name: "管理员列表",
-                        selected: false
-                        },{
-                            href: '/admin/role',
-                            name: "角色列表",
-                            selected: false
-                        },{
-                            href: '/admin/power',
-                            name: "权限列表",
-                            selected: false
-                        }
-                    ]
-                }
-            ],
+            menuData: [],
             passwordDialogVisible: false,
             data: [
                 {content: '修改密码', event: 'updatePassword'},
@@ -106,11 +80,44 @@ export default {
         ])
     },
     mounted: function() {
+        this.initMenu();
         this.setMenuSelect();
     },
     methods: {
         toggle() {
             this.customCollapsed = !this.customCollapsed;
+        },
+        initMenu() {
+            this.menuData = this.checkMenu(menu); 
+        },
+        checkMenu: function(menus) {
+            let finalMenu = [];
+            for(let index in menus)
+            {
+                // 循环权限列表
+                if (menus[index].power !== undefined)
+                {
+                    let forStatus = true;
+                    for (let powerIndex in menus[index].power)
+                    {
+                        // 判断用户权限里有没有这个，有的话，就渲染
+                        if (this.permissions.indexOf(menus[index].power[powerIndex]) > -1 && forStatus)
+                        {
+                            finalMenu.push(menus[index]);
+                            forStatus = false;
+                        }
+                    }
+                } else {
+                    finalMenu.push(menus[index]);
+                }
+
+                // 判断是否需要递归
+                if (menus[index].children != undefined)
+                {
+                    finalMenu[finalMenu.length - 1].children = this.checkMenu(menus[index].children);
+                }
+            }
+            return finalMenu;
         },
         setMenuSelect: function() {
             for(let menuIndex in this.menuData)

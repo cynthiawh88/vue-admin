@@ -24,17 +24,17 @@ export default {
         if (this.historyPath != '')
         {
           console.log('跳转了历史地址');
-          this.$router.push({
+          this.$router.replace({
             path: this.historyPath
           });
         } else {
-          this.$router.push({
+          this.$router.replace({
             path: '/admin'
           });
         }
         this.$store.dispatch('setHistory', '');
       } else {
-        this.$router.push({
+        this.$router.replace({
           path: '/'
         });
       }

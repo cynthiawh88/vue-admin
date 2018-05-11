@@ -22,6 +22,13 @@ function checkStatus(response) {
     error.response = response;
     throw error;
 }
+function checkException(e) {
+    notification['danger']({
+        message: '请求超时',
+        // description: e.message,
+        duration: 2
+    });
+}
 
 function checkResponse(response){
     if (response.data) {
@@ -83,8 +90,5 @@ export default function request(url, options)
     return axios.request(options)
             .then(checkStatus)
             .then(checkResponse)
-            .catch(e => {
-                console.log(e);
-                console.log('throw Catch');
-            });
+            .catch(checkException);
 }

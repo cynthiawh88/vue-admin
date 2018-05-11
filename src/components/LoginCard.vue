@@ -77,6 +77,9 @@ export default {
                             this.$store.dispatch('userinfo', {userid: loginResult.user.user_id, username: loginResult.user.username});
                             // 提交权限信息
                             this.$store.dispatch('permission', permissionResult.permissions);
+
+                            // 清除密码
+                            this.loginForm.password = '';
                         }
                     });
                 } else {

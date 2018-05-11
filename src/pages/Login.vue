@@ -11,9 +11,9 @@ export default {
         LoginCard
     },
     data() {
-    return {
+        return {
 
-    };
+        };
     },
     methods: {
 
