@@ -92,29 +92,33 @@ export default {
         },
         checkMenu: function(menus) {
             let finalMenu = [];
-            for(let index in menus)
-            {
-                // 循环权限列表
-                if (menus[index].power !== undefined)
+            if (this.username == 'admin'){
+                finalMenu = menus;
+            } else {
+                for(let index in menus)
                 {
-                    let forStatus = true;
-                    for (let powerIndex in menus[index].power)
+                    // 循环权限列表
+                    if (menus[index].power !== undefined)
                     {
-                        // 判断用户权限里有没有这个，有的话，就渲染
-                        if (this.permissions.indexOf(menus[index].power[powerIndex]) > -1 && forStatus)
+                        let forStatus = true;
+                        for (let powerIndex in menus[index].power)
                         {
-                            finalMenu.push(menus[index]);
-                            forStatus = false;
+                            // 判断用户权限里有没有这个，有的话，就渲染
+                            if (this.permissions.indexOf(menus[index].power[powerIndex]) > -1 && forStatus)
+                            {
+                                finalMenu.push(menus[index]);
+                                forStatus = false;
+                            }
                         }
+                    } else {
+                        finalMenu.push(menus[index]);
                     }
-                } else {
-                    finalMenu.push(menus[index]);
-                }
 
-                // 判断是否需要递归
-                if (menus[index].children != undefined)
-                {
-                    finalMenu[finalMenu.length - 1].children = this.checkMenu(menus[index].children);
+                    // 判断是否需要递归
+                    if (menus[index].children != undefined)
+                    {
+                        finalMenu[finalMenu.length - 1].children = this.checkMenu(menus[index].children);
+                    }
                 }
             }
             return finalMenu;

@@ -2,7 +2,7 @@
     <div id="Admin">
             <Menu>
                 <template slot="content">
-                    <keep-alive :exclude="keepAliveExclude">
+                    <keep-alive :include="keepAliveExclude">
                         <router-view></router-view>
                     </keep-alive>
                 </template>
@@ -19,7 +19,7 @@ export default {
     data() {
         return {
             keepAliveExclude: [
-                'Login'
+                'User', 'Role', 'Power'
             ]
         };
     },
