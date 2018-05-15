@@ -95,12 +95,12 @@ export default {
             if (this.username == 'admin'){
                 finalMenu = menus;
             } else {
+                let forStatus = true;
                 for(let index in menus)
                 {
                     // 循环权限列表
                     if (menus[index].power !== undefined)
                     {
-                        let forStatus = true;
                         for (let powerIndex in menus[index].power)
                         {
                             // 判断用户权限里有没有这个，有的话，就渲染
@@ -113,12 +113,16 @@ export default {
                     } else {
                         finalMenu.push(menus[index]);
                     }
-
-                    // 判断是否需要递归
-                    if (menus[index].children != undefined)
+                    if (forStatus == false)
                     {
-                        finalMenu[finalMenu.length - 1].children = this.checkMenu(menus[index].children);
+                        // 判断是否需要递归
+                        if (menus[index].children != undefined)
+                        {
+                            finalMenu[finalMenu.length - 1].children = this.checkMenu(menus[index].children);
+                        }
                     }
+
+                    forStatus = true;
                 }
             }
             return finalMenu;
