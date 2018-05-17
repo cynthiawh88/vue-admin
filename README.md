@@ -1,6 +1,7 @@
 # desktop
 
-> A Console Desktop Page
+> 一个基于Vue和Vue-beauty的后台管理系统，集成了用户-角色-权限系统
+> 后台的接口见项目 [HimiHL/php-admin](https://github.com/HimiHL/php-admin)
 
 ## Build Setup
 
