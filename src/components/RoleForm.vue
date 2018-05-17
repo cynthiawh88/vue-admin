@@ -71,7 +71,6 @@ export default {
             this.loading = true;
             this.$refs[formName].validate((valid) => {
                 if (valid) {
-                    let route = 'createRole';
                     let params = {
                         name: this.roleForm.name,
                         desc: this.roleForm.desc,
@@ -94,7 +93,7 @@ export default {
                             this.loading = false;
                             if (resp.status) {
                                 this.$message.success("创建成功");
-                                this.$emit('close', resp.payload.role.role);
+                                this.$emit('close', resp.payload.role);
                             }
                         });
                     }
@@ -110,7 +109,7 @@ export default {
                 role_id: this.role.role_id
             }).then(resp => {
                 if (resp.status) {
-                    this.roleForm = resp.payload.role.role;
+                    this.roleForm = resp.payload.role;
                     for (let i in this.roleForm.powers) {
                         this.has_power.push(this.roleForm.powers[i].power_id);
                     }
@@ -124,7 +123,7 @@ export default {
                 this.componentLoading = false;
                 this.power_list = [];
                 if(resp.status) {
-                    let power_list = resp.payload.power_list.list;
+                    let power_list = resp.payload.list;
                     for (let i in power_list) {
                         this.power_list.push({
                             key: power_list[i].power_id,

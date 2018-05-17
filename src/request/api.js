@@ -1,14 +1,24 @@
 import request from '@/request';
 
+// 登录
 export async function login(params) {
-    return request('/login', {
+    return request('/user/login', {
         data: params,
         method: 'post'
     });
 }
 
-export async function updatePassword(params) {
+// 修改密码
+export async function update_password(params) {
     return request('/password/update', {
+        data: params,
+        method: 'post'
+    });
+}
+
+// 退出登录
+export async function exit(params) {
+    return request('/exit', {
         data: params,
         method: 'post'
     });

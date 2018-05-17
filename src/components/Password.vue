@@ -5,7 +5,7 @@
                 <v-input type="password" size="large" v-model="passwordForm.password"></v-input>
             </v-form-item>
             <v-form-item label="重复密码" :label-col="labelCol" :wrapper-col="wrapperCol" prop="confirm_password" has-feedback>
-                <v-input type="confirm_password" size="large" v-model="passwordForm.confirm_password" @keyup.enter.native="submitForm('passwordForm')"></v-input>
+                <v-input type="password" size="large" v-model="passwordForm.confirm_password" @keyup.enter.native="submitForm('passwordForm')"></v-input>
             </v-form-item>
             <v-form-item>
                 <v-row type="flex" justify="start">

@@ -90,10 +90,10 @@ export default {
                 }
             ).then(resp => {
                 if (resp.status == true) {
-                    this.roleList = resp.payload.role_list.list;
-                    this.page = resp.payload.role_list.page;
-                    this.pagesize = resp.payload.role_list.pagesize;
-                    this.count = resp.payload.role_list.count;
+                    this.roleList = resp.payload.list;
+                    this.page = resp.payload.page;
+                    this.pagesize = resp.payload.pagesize;
+                    this.count = resp.payload.count;
                 }
                 this.loading = false;
             });

@@ -157,7 +157,7 @@ export default {
             this.passwordDialogVisible = false;
         },
         updatePassword: function(password) {
-            userApi.updatePassword({
+            userApi.update_password({
                 user_ids: [this.user.user_id],
                 password: md5(password)
             }).then(resp => {

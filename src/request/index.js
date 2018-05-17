@@ -3,7 +3,7 @@ import { notification } from 'vue-beauty'
 import store from '@/store';
 
 axios.defaults.timeout = 5000;
-axios.defaults.baseURL = 'http://gateway.api.xixilife.cn/manager';
+axios.defaults.baseURL = 'http://user.api.88hao.cn';
 
 // 处理错误
 function checkStatus(response) {

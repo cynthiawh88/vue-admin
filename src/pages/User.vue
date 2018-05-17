@@ -100,10 +100,11 @@ export default {
                 }
             ).then(resp => {
                 if (resp.status == true) {
-                    this.userList = resp.payload.user_list.list;
-                    this.page = resp.payload.user_list.page;
-                    this.pagesize = resp.payload.user_list.pagesize;
-                    this.count = resp.payload.user_list.count;
+                    this.userList = resp.payload.list;
+                    console.log(this.userList);
+                    this.page = resp.payload.page;
+                    this.pagesize = resp.payload.pagesize;
+                    this.count = resp.payload.count;
                 }
                 this.loading = false;
             });

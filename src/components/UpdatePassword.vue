@@ -2,13 +2,13 @@
     <div id="UpdatePassword">
         <v-form direction="horizontal" :rules="passwordRules" ref="passwordForm" :model="passwordForm" class="form">
             <v-form-item label="原密码" :label-col="labelCol" :wrapper-col="wrapperCol" prop="old_password" has-feedback>
-                <v-input type="old_password" size="large" v-model="passwordForm.old_password"></v-input>
+                <v-input type="password" size="large" v-model="passwordForm.old_password"></v-input>
             </v-form-item>
             <v-form-item label="新密码" :label-col="labelCol" :wrapper-col="wrapperCol" prop="password" has-feedback>
                 <v-input type="password" size="large" v-model="passwordForm.password"></v-input>
             </v-form-item>
             <v-form-item label="重复密码" :label-col="labelCol" :wrapper-col="wrapperCol" prop="confirm_password" has-feedback>
-                <v-input type="confirm_password" size="large" v-model="passwordForm.confirm_password" @keyup.enter.native="submitForm('passwordForm')"></v-input>
+                <v-input type="password" size="large" v-model="passwordForm.confirm_password" @keyup.enter.native="submitForm('passwordForm')"></v-input>
             </v-form-item>
             <v-form-item>
                 <v-row type="flex" justify="start">
@@ -74,7 +74,7 @@ export default {
             this.loading = true;
             this.$refs[formName].validate((valid) => {
                 if (valid) {
-                    api.updatePassword({
+                    api.update_password({
                         old_password: md5(this.passwordForm.old_password),
                         password: md5(this.passwordForm.password)
                     }).then(resp => {

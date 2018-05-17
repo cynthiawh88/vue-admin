@@ -1,14 +1,14 @@
 import request from '@/request';
 
 export async function paginate(params) {
-    return request('/roles/paginate', {
+    return request('/role/paginate', {
         params: params,
         method: 'get'
     });
 }
 
 export async function get(params) {
-    return request('/roles', {
+    return request('/role/get', {
         params: params,
         method: 'get'
     });
@@ -34,14 +34,14 @@ export async function updateRole(params) {
     });
 }
 export async function deleteRole(params) {
-    return request('/role/delete', {
+    return request('/role/multi/delete', {
         data: params,
         method: 'post'
     });
 }
 
 export async function paginatePower(params) {
-    return request('/powers/paginate', {
+    return request('/power/paginate', {
         params: params,
         method: 'get'
     })
@@ -62,21 +62,21 @@ export async function updatePower(params) {
 }
 
 export async function deletePower(params) {
-    return request('/power/delete', {
+    return request('/power/multi/delete', {
         data: params,
         method: 'post'
     })
 }
 
 export async function getPower(params) {
-    return request('/powers', {
+    return request('/power/get', {
         params: params,
         method: 'get'
     })
 }
 
 export async function getUserRole(params) {
-    return request('/user/roles', {
+    return request('/user/role/get', {
         params: params,
         method: 'get'
     });

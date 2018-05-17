@@ -69,7 +69,7 @@ export default {
                 user_id: this.userid
             }).then(resp => {
                 if (resp.status) {
-                    let role_list = resp.payload.role_list;
+                    let role_list = resp.payload.list;
                     for (let i in role_list) {
                         this.has_role.push(role_list[i].role_id);
                     }
@@ -82,7 +82,7 @@ export default {
                 this.componentLoading = false;
                 this.role_list = [];
                 if(resp.status) {
-                    let role_list = resp.payload.role_list.list;
+                    let role_list = resp.payload.list;
                     for (let i in role_list) {
                         this.role_list.push({
                             key: role_list[i].role_id,

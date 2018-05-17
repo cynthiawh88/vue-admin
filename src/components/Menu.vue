@@ -56,6 +56,7 @@
 import { mapState } from 'vuex';
 import * as menu from '@/jsons/menu.json';
 import UpdatePassword from '@/components/UpdatePassword';
+import * as api from '@/request/api';
 export default {
     components: {
         UpdatePassword
@@ -170,7 +171,14 @@ export default {
             this.passwordDialogVisible = false;
         },
         logout: function(){
-            this.$store.dispatch('logout');
+            api.exit(
+                {}
+            ).then(resp => {
+                if (resp.status)
+                {
+                    this.$store.dispatch('logout');
+                }
+            })
         }
     }
 };

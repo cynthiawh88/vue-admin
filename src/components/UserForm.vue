@@ -82,7 +82,7 @@ export default {
                         this.loading = false;
                         if (resp.status) {
                             this.$message.success("创建成功");
-                            this.$emit('close', resp.payload.result.user);
+                            this.$emit('close', resp.payload.user);
                         }
                     });
 

@@ -99,10 +99,10 @@ export default {
                 }
             ).then(resp => {
                 if (resp.status == true) {
-                    this.powerList = resp.payload.power_list.list;
-                    this.page = resp.payload.power_list.page;
-                    this.pagesize = resp.payload.power_list.pagesize;
-                    this.count = resp.payload.power_list.count;
+                    this.powerList = resp.payload.list;
+                    this.page = resp.payload.page;
+                    this.pagesize = resp.payload.pagesize;
+                    this.count = resp.payload.count;
                 }
                 this.loading = false;
             });
