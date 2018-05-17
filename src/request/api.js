@@ -2,7 +2,7 @@ import request from '@/request';
 
 // 登录
 export async function login(params) {
-    return request('/user/login', {
+    return request('/login', {
         data: params,
         method: 'post'
     });
