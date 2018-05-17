@@ -72,13 +72,12 @@ export default {
                         if (resp.status == true)
                         {
                             let payload = resp.payload;
-                            let permissionResult = resp.payload.permission;
                             // 提交Token
                             this.$store.dispatch('login', payload.login.token);
                             // 提交用户信息
                             this.$store.dispatch('userinfo', {userid: payload.user.user_id, username: payload.user.username});
                             // 提交权限信息
-                            this.$store.dispatch('permission', permissionResult.power);
+                            this.$store.dispatch('permission', payload.power);
 
                             // 清除密码
                             this.loginForm.password = '';
