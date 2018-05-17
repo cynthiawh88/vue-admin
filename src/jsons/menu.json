@@ -9,22 +9,22 @@
         "name": "管理员资料",
         "icon": "user",
         "expand": false,
-        "power": ["see_user", "see_role", "see_power"],
+        "power": ["user_see", "role_see", "power_see"],
         "children": [
             {
                 "href": "/admin/user",
                 "name": "管理员列表",
-                "power": ["see_user"],
+                "power": ["user_see"],
                 "selected": false
             },{
                 "href": "/admin/role",
                 "name": "角色列表",
-                "power": ["see_role"],
+                "power": ["role_see"],
                 "selected": false
             },{
                 "href": "/admin/power",
                 "name": "权限列表",
-                "power": ["see_power"],
+                "power": ["power_see"],
                 "selected": false
             }
         ]
