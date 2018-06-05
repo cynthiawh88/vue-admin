@@ -90,6 +90,7 @@ export default {
         },
         initMenu() {
             this.menuData = this.checkMenu(menu); 
+            this.setMenuSelect(this.menuData, []);
         },
         checkMenu: function(menus) {
             let finalMenu = [];
@@ -114,44 +115,54 @@ export default {
                     } else {
                         finalMenu.push(menus[index]);
                     }
-                    if (forStatus == false)
-                    {
-                        // 判断是否需要递归
+                    // 判断是否需要递归
+                    if (forStatus == false) {
                         if (menus[index].children != undefined)
                         {
                             finalMenu[finalMenu.length - 1].children = this.checkMenu(menus[index].children);
                         }
                     }
-
                     forStatus = true;
                 }
             }
             return finalMenu;
         },
-        setMenuSelect: function() {
-            for(let menuIndex in this.menuData)
-            {
-                if (this.menuData[menuIndex].href != undefined)
+        setMenuSelect: function(menus, menuIndexArray) {
+            let flag = false;
+            for(let menuIndex in menus) {
+                if (menus[menuIndex].href != undefined && menus[menuIndex].href == this.$route.path)
                 {
-                    if (this.menuData[menuIndex].href == this.$route.path)
-                    {
-                        this.menuData[menuIndex].selected = true;
-                    }
+                    menus[menuIndex].selected = true;
+                    // 调用展开目录的方法
+                    this.setMenuExpand(menuIndexArray);
+                    flag = true;
+                    break;
                 } else {
-                    if (this.menuData[menuIndex].children != undefined)
+                    if (menus[menuIndex].children != undefined)
                     {
-                        for (let childIndex in this.menuData[menuIndex].children)
+                        // 保存本级菜单的索引
+                        menuIndexArray.push(menuIndex);
+                        // 开始递归
+                        let selectFlag = this.setMenuSelect(menus[menuIndex].children, menuIndexArray);
+                        if (selectFlag)
                         {
-                            if (this.menuData[menuIndex].children[childIndex].href == this.$route.path)
-                            {
-                                if (this.menuData[menuIndex].expand != undefined)
-                                {
-                                    this.menuData[menuIndex].expand = true;
-                                }
-                                this.menuData[menuIndex].children[childIndex].selected = true;
-                            }
+                            break;
+                        } else {
+                            menuIndexArray.pop();
                         }
                     }
+                }
+            }
+            return flag;
+        },
+        setMenuExpand: function(menuIndexArray) {
+            let menus = this.menuData;
+            for (let menuIndex in menuIndexArray)
+            {
+                menus[menuIndexArray[menuIndex]].expand = true;
+                if (menuIndex + 1 <= menuIndexArray)
+                {
+                    menus = menus[menuIndexArray[menuIndex]].children;
                 }
             }
         },
