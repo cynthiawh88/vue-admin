@@ -70,7 +70,10 @@ const routes = [
           aliasName: '权限列表',
           power: 'see_power',
           auth: true
-        }
+        },
+        breadcurmbs: [  // 设置面包屑
+          'QuestionList'
+        ]
       }
     ]
   }

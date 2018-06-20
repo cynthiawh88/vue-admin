@@ -15,6 +15,9 @@
                 "href": "/admin/user",
                 "name": "管理员列表",
                 "power": ["user_see"],
+                "selectRoutes": [
+                    "/admin/user"
+                ],
                 "selected": false
             },{
                 "href": "/admin/role",

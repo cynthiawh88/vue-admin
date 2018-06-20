@@ -130,7 +130,8 @@ export default {
         setMenuSelect: function(menus, menuIndexArray) {
             let flag = false;
             for(let menuIndex in menus) {
-                if (menus[menuIndex].href != undefined && menus[menuIndex].href == this.$route.path)
+                if ((menus[menuIndex].selectRoutes != undefined && menus[menuIndex].selectRoutes.findIndex(menu => menu == that.$route.path) >= 0) || (menus[menuIndex].href != undefined && menus[menuIndex].href == this.$route.path))
+                // if (menus[menuIndex].href != undefined && menus[menuIndex].href == this.$route.path)
                 {
                     menus[menuIndex].selected = true;
                     // 调用展开目录的方法
